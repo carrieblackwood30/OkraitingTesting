@@ -1,22 +1,25 @@
 <template>
-    <div class="w-full min-h-[600px] border relative overflow-y-scroll">
-        <div v-if="chatWith">
+    <div class="w-full h-[600px] border relative">
+        <div v-if="chatWith" class="h-[580px] overflow-y-scroll">
             <h3 class="border-b mx-2 my-4 text-xl">{{ chatWith }}</h3>
 
-            <div 
-                class="max-h-[580px] mx-8 my-2"
-                v-for="message in sendMessage" 
-                :key="message"
-                >
-                <p
-                    class="border rounded-lg w-fit px-2"
-                    :class="message.chatWith === chatWith ? 'bg-gray-500 ml-auto' : 'bg-blue-500'"
-                    v-if="message.chatWith === chatWith && message.currentUser === currentUser || message.chatWith === currentUser && message.currentUser === chatWith "
-                >{{ message.message }}</p>
+            <div class="min-h-[493px]">
+                <div 
+                    class="mx-8 my-2"
+                    v-for="message in sendMessage" 
+                    :key="message"
+                    >
+                    <p
+                        class="border rounded-lg w-fit px-2"
+                        :class="message.chatWith === chatWith ? 'bg-gray-500 ml-auto' : 'bg-blue-500'"
+                        v-if="message.chatWith === chatWith && message.currentUser === currentUser || message.chatWith === currentUser && message.currentUser === chatWith "
+                    >{{ message.message }}</p>
+                </div>
             </div>
 
-            <div class="absolute bottom-2 left-4 flex gap-2">
+            <div class="sticky ml-4 bottom-0 left-4 flex gap-2">
                 <input 
+                    @keyup.enter="addMessage()"
                     v-model="userMessage"
                     type="text" 
                     placeholder="text a message..." 
@@ -36,7 +39,7 @@
 </template>
 
 <script setup>
-    import { ref, watch } from "vue"
+    import { ref } from "vue"
 
     const props = defineProps({
         currentUser: String,
@@ -46,7 +49,6 @@
     const userMessage = ref('')
 
     const sendMessage = ref(JSON.parse(localStorage.getItem("chats")) || [])
-
     
     function addMessage() {
         if(userMessage.value != ''){

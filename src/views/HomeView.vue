@@ -24,7 +24,6 @@
 </template>
 
 <script setup>
-import router from "@/router";
 import { ref } from "vue";
 import { useUsersStore } from "@/stores/users";
 import chatVue from "@/components/chat.vue";
